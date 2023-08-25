@@ -118,15 +118,23 @@ $ yarn upload
 
 We can sign another name for the registry and then send a request to the Autotask webhook to relay and finally view the registry.
 
+※これうまく動かないのでnode.js + axiosで実施
+
 ```js
 $ NAME=alice yarn sign
 $ curl -XPOST 'Your Autotask Webhook URI goes here' -H 'Content-type: application/json' -d '@tmp/request.json'
+$ curl -X POST 'https://api.defender.openzeppelin.com/autotasks/52a48802-e2f3-4eaa-8e3b-66c62022e110/runs/webhook/b62a2fcf-1c94-45ed-8449-730399a11f5a/HKGoNwunBWTuQNwcwRtE2J' -H 'Content-type:application/json' -d '@tmp/request.json'
 $ yarn events
 ```
 
 ### Run app
 
 Copy the Autotask Webhook URI and store in our apps `.env` file (in the `app` directory).
+
+Copy and replace these 2 files.(うまく動かないので雰囲気で魔改造)
+
+- `\defender-meta-txs-polygon-testnet\deploy.json` to `defender-meta-txs-polygon-testnet\app\src\deploy.json`
+- `\defender-meta-txs-polygon-testnet\src\signer.js` to `\defender-meta-txs-polygon-testnet\app\src\eth\signer.js`
 
 We can then install dependencies using `yarn` and run the app.
 
@@ -136,6 +144,6 @@ $ yarn start
 ```
 
 1. Open app: [http://localhost:3000/](http://localhost:3000/)
-2. [Connect MetaMask to xDai network](https://metamask.zendesk.com/hc/en-us/articles/360052711572-How-to-connect-to-the-xDai-network) and change to xDai network
+2. Connect MetaMask to the network you've deployed.
 3. Enter a name to register and sign the metatransaction in MetaMask
 4. Your name will be registered, showing the address that created the metatransaction and the name.

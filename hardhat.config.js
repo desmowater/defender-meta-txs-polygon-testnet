@@ -25,8 +25,12 @@ module.exports = {
       accounts: [process.env.PRIVATE_KEY],
     },
     mumbai: {
-      url: "https://polygon-mumbai.infura.io/v3/" + process.env.INFURA_API_KEY,
+      url: process.env.POLYGON_MUMBAI_URL,
       accounts: [process.env.PRIVATE_KEY],
     }
-  }
+  },
+  etherscan: {
+    //    apiKey: process.env.ETHERSCAN_API_KEY
+    apiKey: process.env.POLYGONSCAN_API_KEY
+  },
 };

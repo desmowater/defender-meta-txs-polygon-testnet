@@ -16,7 +16,8 @@ async function sendMetaTx(registry, provider, signer, name) {
   const from = await signer.getAddress();
   const data = registry.interface.encodeFunctionData('register', [name]);
   const to = registry.address;
-  
+  console.log("reached here!");
+
   const request = await signMetaTxRequest(signer.provider, forwarder, { to, from, data });
 
   return fetch(url, {
@@ -33,13 +34,15 @@ export async function registerName(registry, provider, name) {
   await window.ethereum.enable();
   const userProvider = new ethers.providers.Web3Provider(window.ethereum);
   const userNetwork = await userProvider.getNetwork();
-  if (userNetwork.chainId !== 80001) throw new Error(`Please switch to xDAI for signing`);
+  if (userNetwork.chainId !== 80001) throw new Error(`Please switch to Mumbai for signing`);
+  // if (userNetwork.chainId !== 80001) throw new Error(`Please switch to xDAI for signing`);
 
   const signer = userProvider.getSigner();
   const from = await signer.getAddress();
   const balance = await provider.getBalance(from);
-  
+
   const canSendTx = balance.gt(1e15);
-  if (canSendTx) return sendTx(registry.connect(signer), name);
+  if (canSendTx) return sendMetaTx(registry, provider, signer, name);
+  // if (canSendTx) return sendTx(registry.connect(signer), name);
   else return sendMetaTx(registry, provider, signer, name);
 }
